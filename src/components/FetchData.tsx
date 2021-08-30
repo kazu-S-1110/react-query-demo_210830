@@ -1,13 +1,11 @@
-import { Button, Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, Link } from '@chakra-ui/react';
 import axios from 'axios';
+import { useQueryUrls } from '../hooks/useQueryUrls';
 
 export const FetchData = () => {
-  const fetchData = async () => {
-    const { data } = await axios('http://localhost:8000/api/Favo/');
-    return data;
-  };
+  const { status, data } = useQueryUrls();
+  console.log(data);
 
-  console.log(fetchData());
   return (
     <Flex m={10} direction="column">
       <Text
@@ -18,7 +16,15 @@ export const FetchData = () => {
       >
         I'm testing FetchData
       </Text>
-      <Button onClick={() => fetchData}>Fetch Data</Button>
+      {data?.map((url) => (
+        <Link>
+          <Text key={url.id} fontSize="xl" fontWeight="extrabold">
+            {url.title}
+            {'  '}
+            {url.url}
+          </Text>
+        </Link>
+      ))}
     </Flex>
   );
 };
